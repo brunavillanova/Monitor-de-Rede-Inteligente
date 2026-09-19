@@ -1,5 +1,5 @@
-import { prisma } from "../lib/prisma";
 import { Request, Response } from "express";
+import { prisma } from "../lib/prisma";
 
 export async function listarEquipamentos(
   req: Request,
@@ -56,6 +56,7 @@ export async function registrarManutencao(
 
   res.json(equipamento);
 }
+
 export async function atualizarEquipamento(
   req: Request,
   res: Response

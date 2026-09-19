@@ -1,8 +1,8 @@
 import { useState } from "react";
+
 import { api } from "../services/api";
 
 export function NovoEquipamento() {
-
   // ============================
   // States dos campos
   // ============================
@@ -15,7 +15,7 @@ export function NovoEquipamento() {
   const [temperatura, setTemperatura] = useState("");
 
   // ============================
-  // Estilo padrão dos inputs
+  // Estilo dos inputs
   // ============================
 
   const inputStyle = {
@@ -27,6 +27,18 @@ export function NovoEquipamento() {
     color: "white",
     fontSize: "14px",
     boxSizing: "border-box" as const,
+    outline: "none",
+  };
+
+  // ============================
+  // Estilo das descrições
+  // ============================
+
+  const descriptionStyle = {
+    fontSize: "12px",
+    color: "#9ca3af",
+    marginTop: "4px",
+    marginBottom: "2px",
   };
 
   // ============================
@@ -37,10 +49,13 @@ export function NovoEquipamento() {
     try {
       let status = "online";
 
-      // Define status automático
-      if (Number(temperatura) >= 70) {
+      const temperaturaNum = Number(temperatura);
+
+      // Define status automaticamente pela temperatura
+
+      if (temperaturaNum >= 70) {
         status = "falha";
-      } else if (Number(temperatura) >= 50) {
+      } else if (temperaturaNum >= 50) {
         status = "alerta";
       }
 
@@ -57,6 +72,7 @@ export function NovoEquipamento() {
       alert("✅ Equipamento cadastrado com sucesso!");
 
       // Limpar formulário
+
       setNome("");
       setLatitude("");
       setLongitude("");
@@ -64,9 +80,12 @@ export function NovoEquipamento() {
       setCorrente("");
       setTemperatura("");
 
+      // Atualiza a tela
+
       window.location.reload();
     } catch (error) {
       console.error(error);
+
       alert("❌ Erro ao cadastrar equipamento");
     }
   }
@@ -79,15 +98,19 @@ export function NovoEquipamento() {
     <div
       style={{
         width: "100%",
-        maxWidth: "700px", // Ajusta largura do formulário
+        maxWidth: "700px",
         margin: "0 auto",
         background: "#111827",
         padding: "30px",
         borderRadius: "12px",
         border: "1px solid #374151",
+        boxSizing: "border-box",
       }}
     >
-      {/* Título */}
+      {/* ============================
+          TÍTULO
+      ============================ */}
+
       <h2
         style={{
           textAlign: "center",
@@ -97,64 +120,292 @@ export function NovoEquipamento() {
         ➕ Novo Equipamento
       </h2>
 
-      {/* Grid dos campos */}
+      {/* ============================
+          CAMPOS
+      ============================ */}
+
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 1fr", // 2 colunas
+          gridTemplateColumns:
+            "repeat(auto-fit, minmax(250px, 1fr))",
           gap: "15px",
         }}
       >
-        {/* Nome */}
-        <input
-          placeholder="Nome"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          style={inputStyle}
-        />
+        {/* ============================
+            NOME
+        ============================ */}
 
-        {/* Latitude */}
-        <input
-          placeholder="Latitude"
-          value={latitude}
-          onChange={(e) => setLatitude(e.target.value)}
-          style={inputStyle}
-        />
+        <div>
+          <label
+            style={{
+              display: "block",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "14px",
+            }}
+          >
+            Nome do equipamento
+          </label>
 
-        {/* Longitude */}
-        <input
-          placeholder="Longitude"
-          value={longitude}
-          onChange={(e) => setLongitude(e.target.value)}
-          style={inputStyle}
-        />
+          <p style={descriptionStyle}>
+            🏷️ Identificação do equipamento na rede.
+          </p>
 
-        {/* Tensão */}
-        <input
-          placeholder="Tensão (kV)"
-          value={tensao}
-          onChange={(e) => setTensao(e.target.value)}
-          style={inputStyle}
-        />
+          <input
+            placeholder="Ex: Transformador T-003"
+            value={nome}
+            onChange={(e) =>
+              setNome(e.target.value)
+            }
+            style={inputStyle}
+          />
+        </div>
 
-        {/* Corrente */}
-        <input
-          placeholder="Corrente (A)"
-          value={corrente}
-          onChange={(e) => setCorrente(e.target.value)}
-          style={inputStyle}
-        />
+        {/* ============================
+            LATITUDE
+        ============================ */}
 
-        {/* Temperatura */}
-        <input
-          placeholder="Temperatura (°C)"
-          value={temperatura}
-          onChange={(e) => setTemperatura(e.target.value)}
-          style={inputStyle}
-        />
+        <div>
+          <label
+            style={{
+              display: "block",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "14px",
+            }}
+          >
+            Latitude
+          </label>
+
+          <p style={descriptionStyle}>
+            📍 Latitude da localização do equipamento.
+          </p>
+
+          <input
+            type="number"
+            step="any"
+            placeholder="Ex: -23.32"
+            value={latitude}
+            onChange={(e) =>
+              setLatitude(e.target.value)
+            }
+            style={inputStyle}
+          />
+        </div>
+
+        {/* ============================
+            LONGITUDE
+        ============================ */}
+
+        <div>
+          <label
+            style={{
+              display: "block",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "14px",
+            }}
+          >
+            Longitude
+          </label>
+
+          <p style={descriptionStyle}>
+            📍 Longitude da localização do equipamento.
+          </p>
+
+          <input
+            type="number"
+            step="any"
+            placeholder="Ex: -46.75"
+            value={longitude}
+            onChange={(e) =>
+              setLongitude(e.target.value)
+            }
+            style={inputStyle}
+          />
+        </div>
+
+        {/* ============================
+            TENSÃO
+        ============================ */}
+
+        <div>
+          <label
+            style={{
+              display: "block",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "14px",
+            }}
+          >
+            Tensão (kV)
+          </label>
+
+          <p style={descriptionStyle}>
+            ⚡ Tensão elétrica medida no equipamento.
+          </p>
+
+          <input
+            type="number"
+            step="any"
+            placeholder="Ex: 11.9"
+            value={tensao}
+            onChange={(e) =>
+              setTensao(e.target.value)
+            }
+            style={inputStyle}
+          />
+        </div>
+
+        {/* ============================
+            CORRENTE
+        ============================ */}
+
+        <div>
+          <label
+            style={{
+              display: "block",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "14px",
+            }}
+          >
+            Corrente (A)
+          </label>
+
+          <p style={descriptionStyle}>
+            🔌 Corrente elétrica medida no equipamento.
+          </p>
+
+          <input
+            type="number"
+            step="any"
+            placeholder="Ex: 240"
+            value={corrente}
+            onChange={(e) =>
+              setCorrente(e.target.value)
+            }
+            style={inputStyle}
+          />
+        </div>
+
+        {/* ============================
+            TEMPERATURA
+        ============================ */}
+
+        <div>
+          <label
+            style={{
+              display: "block",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "14px",
+            }}
+          >
+            Temperatura (°C)
+          </label>
+
+          <p style={descriptionStyle}>
+            🌡️ Temperatura atual do equipamento.
+          </p>
+
+          <input
+            type="number"
+            step="any"
+            placeholder="Ex: 42"
+            value={temperatura}
+            onChange={(e) =>
+              setTemperatura(e.target.value)
+            }
+            style={{
+              ...inputStyle,
+              border:
+                temperatura === ""
+                  ? "1px solid #374151"
+                  : Number(temperatura) >= 70
+                  ? "1px solid #ef4444"
+                  : Number(temperatura) >= 50
+                  ? "1px solid #eab308"
+                  : "1px solid #22c55e",
+            }}
+          />
+
+          {/* Indicador automático */}
+
+          {temperatura !== "" && (
+            <div
+              style={{
+                marginTop: "8px",
+                padding: "9px",
+                borderRadius: "8px",
+                background:
+                  Number(temperatura) >= 70
+                    ? "rgba(239, 68, 68, 0.12)"
+                    : Number(temperatura) >= 50
+                    ? "rgba(234, 179, 8, 0.12)"
+                    : "rgba(34, 197, 94, 0.12)",
+                border:
+                  Number(temperatura) >= 70
+                    ? "1px solid #ef4444"
+                    : Number(temperatura) >= 50
+                    ? "1px solid #eab308"
+                    : "1px solid #22c55e",
+                color:
+                  Number(temperatura) >= 70
+                    ? "#f87171"
+                    : Number(temperatura) >= 50
+                    ? "#facc15"
+                    : "#4ade80",
+                fontSize: "12px",
+                fontWeight: "bold",
+              }}
+            >
+              {Number(temperatura) >= 70
+                ? "🔴 Status automático: FALHA"
+                : Number(temperatura) >= 50
+                ? "🟡 Status automático: ALERTA"
+                : "🟢 Status automático: ONLINE"}
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Botão Salvar */}
+      {/* ============================
+          EXPLICAÇÃO DOS LIMITES
+      ============================ */}
+
+      <div
+        style={{
+          background: "#1f2937",
+          borderRadius: "8px",
+          padding: "12px",
+          marginTop: "20px",
+          fontSize: "12px",
+          color: "#d1d5db",
+        }}
+      >
+        <strong style={{ color: "white" }}>
+          🌡️ Limites de temperatura
+        </strong>
+
+        <div style={{ marginTop: "6px" }}>
+          🟢 Abaixo de 50°C — Online
+        </div>
+
+        <div style={{ marginTop: "4px" }}>
+          🟡 De 50°C até 69°C — Alerta
+        </div>
+
+        <div style={{ marginTop: "4px" }}>
+          🔴 70°C ou mais — Falha
+        </div>
+      </div>
+
+      {/* ============================
+          BOTÃO
+      ============================ */}
+
       <button
         onClick={salvar}
         style={{

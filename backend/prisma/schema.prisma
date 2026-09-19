@@ -19,4 +19,30 @@ model Equipamento {
   temperatura Float?
 
   createdAt   DateTime @default(now())
+
+  manutencoes Manutencao[]
+  medicoes    Medicao[]
+}
+
+model Manutencao {
+  id            Int         @id @default(autoincrement())
+  tipo          String
+  responsavel   String
+  descricao     String
+  status        String      @default("concluida")
+  data          DateTime    @default(now())
+
+  equipamentoId Int
+  equipamento   Equipamento @relation(fields: [equipamentoId], references: [id], onDelete: Cascade)
+}
+
+model Medicao {
+  id            Int      @id @default(autoincrement())
+  temperatura   Float?
+  tensao        Float?
+  corrente      Float?
+  data          DateTime @default(now())
+
+  equipamentoId Int
+  equipamento   Equipamento @relation(fields: [equipamentoId], references: [id], onDelete: Cascade)
 }
