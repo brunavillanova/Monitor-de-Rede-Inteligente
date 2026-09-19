@@ -1,0 +1,249 @@
+/* =========================================================
+   SMART GRID MONITOR
+   RESPONSIVO
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   CONTAINER PRINCIPAL
+========================================================= */
+
+.dashboard-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background: #0f172a;
+  color: white;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.dashboard-sidebar {
+  width: 260px;
+  min-height: 100vh;
+  padding: 20px;
+  background: #111827;
+  border-right: 1px solid #374151;
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   CONTEÚDO
+========================================================= */
+
+.dashboard-content {
+  flex: 1;
+  min-width: 0;
+  padding: 30px;
+}
+
+/* =========================================================
+   TÍTULO
+========================================================= */
+
+.dashboard-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 48px;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.dashboard-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+/* =========================================================
+   ALERTAS
+========================================================= */
+
+.alert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.alert-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+/* =========================================================
+   BUSCA E FILTRO
+========================================================= */
+
+.equipamentos-filtros {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.equipamentos-busca {
+  flex: 1;
+  min-width: 0;
+}
+
+.equipamentos-filtro {
+  width: 160px;
+}
+
+/* =========================================================
+   TABELA
+========================================================= */
+
+.tabela-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tabela-equipamentos {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .dashboard-sidebar {
+    width: 210px;
+    padding: 15px;
+  }
+
+  .dashboard-content {
+    padding: 20px;
+  }
+
+  .dashboard-title {
+    font-size: 38px;
+  }
+
+}
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .dashboard-container {
+    display: block;
+  }
+
+  .dashboard-sidebar {
+    width: 100%;
+    min-height: auto;
+    padding: 12px;
+    border-right: none;
+    border-bottom: 1px solid #374151;
+  }
+
+  .dashboard-content {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .dashboard-title {
+    font-size: 28px;
+    margin-bottom: 22px;
+  }
+
+  /* Cards */
+
+  .dashboard-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+
+  /* Alertas */
+
+  .alert-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .alert-header button {
+    width: 100%;
+  }
+
+  .alert-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Busca */
+
+  .equipamentos-filtros {
+    flex-direction: column;
+  }
+
+  .equipamentos-busca,
+  .equipamentos-filtro {
+    width: 100%;
+  }
+
+  /* Tabela */
+
+  .tabela-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .tabela-equipamentos {
+    min-width: 850px;
+  }
+
+}
+
+/* =========================================================
+   CELULAR PEQUENO
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .dashboard-content {
+    padding: 10px;
+  }
+
+  .dashboard-title {
+    font-size: 24px;
+  }
+
+}
