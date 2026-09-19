@@ -83,37 +83,6 @@ export function Dashboard() {
     }
   }
 
-  // ============================
-  // Editar equipamento
-  // ============================
-
-  async function editarEquipamento(
-    equipamento: Equipamento
-  ) {
-    const novoNome = window.prompt(
-      "Novo nome:",
-      equipamento.nome
-    );
-
-    if (!novoNome) return;
-
-    try {
-      await api.put(
-        `/equipamentos/${equipamento.id}`,
-        {
-          ...equipamento,
-          nome: novoNome,
-        }
-      );
-
-      await carregarEquipamentos();
-
-      alert("Equipamento atualizado!");
-    } catch (error) {
-      console.error(error);
-      alert("Erro ao atualizar equipamento");
-    }
-  }
 
   // ============================
   // Estatísticas
