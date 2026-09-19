@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Equipamento {
+  id          Int      @id @default(autoincrement())
+  nome        String
+  latitude    Float
+  longitude   Float
+  status      String
+
+  tensao      Float?
+  corrente    Float?
+  temperatura Float?
+
+  createdAt   DateTime @default(now())
+}
