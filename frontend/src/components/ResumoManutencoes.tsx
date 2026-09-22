@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import {
   BarChart,
@@ -8,6 +9,8 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+
+import { api } from "../services/api";
 
 interface Manutencao {
   id: number;
@@ -32,28 +35,20 @@ export function ResumoManutencoes() {
     carregarManutencoes();
   }, []);
 
-  async function carregarManutencoes() {
-    try {
-      const resposta = await fetch(
-        "http://localhost:3000/manutencoes"
-      );
+async function carregarManutencoes() {
+  try {
+    const resposta = await api.get("/manutencoes");
 
-      if (!resposta.ok) {
-        throw new Error(
-          "Erro ao buscar manutenções"
-        );
-      }
+    const dados = resposta.data;
 
-      const dados = await resposta.json();
-
-      setManutencoes(dados);
-    } catch (error) {
-      console.error(
-        "Erro ao carregar manutenções:",
-        error
-      );
-    }
+    setManutencoes(dados);
+  } catch (error) {
+    console.error(
+      "Erro ao carregar manutenções:",
+      error
+    );
   }
+}
 
   const total = manutencoes.length;
 
