@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { api } from "../services/api";
 
 interface Equipamento {
   id: number;
@@ -51,29 +52,21 @@ export function DetalhesEquipamento({
   // BUSCAR HISTÓRICO
   // ==========================================
 
-  async function carregarManutencoes() {
-    try {
-      const resposta = await fetch(
-        `http://localhost:3000/equipamentos/${equipamento.id}/manutencoes`
-      );
+async function carregarManutencoes() {
+  try {
+    const resposta = await api.get(
+      `/equipamentos/${equipamento.id}/manutencoes`
+    );
 
-      if (!resposta.ok) {
-        throw new Error(
-          "Erro ao buscar histórico de manutenção"
-        );
-      }
-
-      const dados = await resposta.json();
-
-      setManutencoes(dados);
-    } catch (error) {
-      console.error(error);
-    }
+    setManutencoes(resposta.data);
+  } catch (error) {
+    console.error("Erro ao carregar manutenções:", error);
   }
+}
 
-  useEffect(() => {
-    carregarManutencoes();
-  }, [equipamento.id]);
+useEffect(() => {
+  carregarManutencoes();
+}, [equipamento.id]);
 
   // ==========================================
   // LIMPAR FORMULÁRIO
@@ -128,114 +121,95 @@ export function DetalhesEquipamento({
   // SALVAR / ATUALIZAR MANUTENÇÃO
   // ==========================================
 
-  async function salvarManutencao() {
-    if (!responsavel.trim()) {
-      alert(
-        "Informe o responsável pela manutenção."
-      );
-      return;
-    }
+ async function salvarManutencao() {
+  if (!responsavel.trim()) {
+    alert("Informe o responsável pela manutenção.");
+    return;
+  }
 
-    if (!descricao.trim()) {
-      alert(
-        "Informe a descrição da manutenção."
-      );
-      return;
-    }
+  if (!descricao.trim()) {
+    alert("Informe a descrição da manutenção.");
+    return;
+  }
 
-    try {
-      setSalvando(true);
+  try {
+    setSalvando(true);
 
-      const estaEditando =
-        manutencaoEditando !== null;
+    const estaEditando = manutencaoEditando !== null;
 
-      const url = estaEditando
-        ? `http://localhost:3000/equipamentos/${equipamento.id}/manutencoes/${manutencaoEditando}`
-        : `http://localhost:3000/equipamentos/${equipamento.id}/manutencoes`;
-
-      const resposta = await fetch(url, {
-        method: estaEditando ? "PUT" : "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({
+    if (estaEditando) {
+      await api.put(
+        `/equipamentos/${equipamento.id}/manutencoes/${manutencaoEditando}`,
+        {
           tipo,
           responsavel,
           descricao,
           status: statusManutencao,
-        }),
-      });
-
-      if (!resposta.ok) {
-        throw new Error(
-          "Erro ao salvar manutenção"
-        );
-      }
-
-      alert(
-        estaEditando
-          ? "Manutenção atualizada com sucesso! 🔧"
-          : "Manutenção registrada com sucesso! 🔧"
+        }
       );
-
-      limparFormulario();
-
-      await carregarManutencoes();
-    } catch (error) {
-      console.error(error);
-
-      alert(
-        "Não foi possível salvar a manutenção."
+    } else {
+      await api.post(
+        `/equipamentos/${equipamento.id}/manutencoes`,
+        {
+          tipo,
+          responsavel,
+          descricao,
+          status: statusManutencao,
+        }
       );
-    } finally {
-      setSalvando(false);
     }
+
+    alert(
+      estaEditando
+        ? "Manutenção atualizada com sucesso! 🔧"
+        : "Manutenção registrada com sucesso! 🔧"
+    );
+
+    limparFormulario();
+    await carregarManutencoes();
+
+  } catch (error) {
+    console.error(error);
+
+    alert("Não foi possível salvar a manutenção.");
+
+  } finally {
+    setSalvando(false);
   }
+}
 
   // ==========================================
   // EXCLUIR MANUTENÇÃO
   // ==========================================
 
-  async function excluirManutencao(
-    manutencaoId: number
-  ) {
-    const confirmar = window.confirm(
-      "Deseja realmente excluir esta manutenção?"
+async function excluirManutencao(
+  manutencaoId: number
+) {
+  const confirmar = window.confirm(
+    "Deseja realmente excluir esta manutenção?"
+  );
+
+  if (!confirmar) {
+    return;
+  }
+
+  try {
+    await api.delete(
+      `/equipamentos/${equipamento.id}/manutencoes/${manutencaoId}`
     );
 
-    if (!confirmar) {
-      return;
-    }
+    alert("Manutenção excluída com sucesso.");
 
-    try {
-      const resposta = await fetch(
-        `http://localhost:3000/equipamentos/${equipamento.id}/manutencoes/${manutencaoId}`,
-        {
-          method: "DELETE",
-        }
-      );
+    await carregarManutencoes();
 
-      if (!resposta.ok) {
-        throw new Error(
-          "Erro ao excluir manutenção"
-        );
-      }
+  } catch (error) {
+    console.error(error);
 
-      alert(
-        "Manutenção excluída com sucesso."
-      );
-
-      await carregarManutencoes();
-    } catch (error) {
-      console.error(error);
-
-      alert(
-        "Não foi possível excluir a manutenção."
-      );
-    }
+    alert(
+      "Não foi possível excluir a manutenção."
+    );
   }
+}
 
   // ==========================================
   // STATUS DO EQUIPAMENTO
